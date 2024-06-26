@@ -17,7 +17,7 @@ export default function Navbar(){
     const { isOpen, onOpen, onClose } = useDisclosure()
     return(
         <>
-    <Flex justifyContent={"space-between"} py={5}>
+    <Flex justifyContent={"space-between"} py={5} px={3}>
         <div>
             <Button onClick={onOpen}>
             <HamburgerIcon />
@@ -35,11 +35,10 @@ export default function Navbar(){
     >
         <DrawerOverlay />
         <DrawerContent>
-        <DrawerCloseButton />
-
-        <DrawerBody>
-            <NavContent />
-        </DrawerBody>
+            <DrawerCloseButton />
+            <DrawerBody>
+                <NavContent />
+            </DrawerBody>
 
         </DrawerContent>
     </Drawer>

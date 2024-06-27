@@ -2,7 +2,7 @@
 import { Card, CardHeader, CardBody, CardFooter, Flex, Text } from '@chakra-ui/react'
 import NavBar from "../components/navbar"
 
-const links = ["Meal", "Ingredient", "Item"]
+const links = ["New Ingredient", "New Meal", "New Plan"]
 export default function Home(){
     return( 
         <>

@@ -45,8 +45,11 @@ export default function SectionItem({sectionData}: SectionItemProps){
                         <SmallCloseIcon />
                     </Flex>
                 </Flex>
-                <Divider my={2} />
-                <div>
+                <div style={{
+                    border: "0.5px solid lightgrey", 
+                    borderRadius: "10px", 
+                    padding: "10px 0px"
+                }}>
                     {sectionData.items && (
                         <>
                             {sectionData.items.map((item: itemObject, index) => {

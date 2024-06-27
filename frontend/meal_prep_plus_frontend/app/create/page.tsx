@@ -10,6 +10,11 @@ import {
     Button,
     Card,
     CardBody,
+    Stat,
+    StatArrow,
+    StatHelpText,
+    StatLabel,
+    StatNumber,
 } from "@chakra-ui/react"
 import Navbar from "../components/navbar";
 import { AddIcon } from "@chakra-ui/icons";
@@ -87,7 +92,7 @@ export default function Create(){
     return(
         <>
             <Navbar />
-            <main style={{padding: "50px"}}>
+            <main style={{padding: "50px", position: "relative", paddingBottom: "100px"}}>
                 <Flex 
                     maxH={"200px"} 
                     p={1}
@@ -140,16 +145,28 @@ export default function Create(){
                         Add Section
                     </Button>
                 </Flex>
-                <Flex justifyContent={"space-evenly"}>
-                    <Card>
-                        <CardBody p={10}>
-                            <Flex flexDir={"column"} alignItems={"center"}>
-                                <h1>{calcTotalCalories()}</h1>
-                                <h1>Total Calories</h1>
-                            </Flex>
-                        </CardBody>
-                    </Card>
-                </Flex>
+                
+                <div style={{
+                    position: "fixed", 
+                    display: "flex", 
+                    justifyContent: "space-evenly",
+                    backgroundColor: "white",
+                    borderTop: "1px solid lightgrey",
+                    bottom: "0px", 
+                    left: "0px", 
+                    width: "100vw",
+                    height: "100px",
+                    padding: "10px"
+                }}>
+                    <Stat>
+                        <StatLabel>Total Calories</StatLabel>
+                        <StatNumber>{calcTotalCalories()}</StatNumber>
+                        <StatHelpText>
+                        <StatArrow type='increase' />
+                        within goal
+                        </StatHelpText>
+                    </Stat>
+                </div>
             </main>
         </>
     );

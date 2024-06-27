@@ -14,6 +14,8 @@ import {
 import Navbar from "../components/navbar";
 import { AddIcon } from "@chakra-ui/icons";
 import SectionItem from "../components/sectionItem";
+import ListItem from "../components/listItem";
+import { TEST_USER_DATA } from "../utils/constants";
 
 interface itemObject{
     name: string,
@@ -25,6 +27,11 @@ interface itemObject{
     fats: number,
     sugar: number,
     price: number
+};
+
+interface UserObject{
+    name: string;
+    ingredients: itemObject[];
 };
 
 interface SectionObject {
@@ -60,8 +67,11 @@ const defaultSection = {
         }
     ],
 }
+
 export default function Create(){
     const [sections, setSections] = useState<SectionObject[]>([defaultSection])
+    const [user, setUser] = useState<UserObject>(TEST_USER_DATA)
+    
 
     const calcTotalCalories = function(){
         let totalCalories = 0;
@@ -80,19 +90,20 @@ export default function Create(){
             <main style={{padding: "50px"}}>
                 <Flex 
                     maxH={"200px"} 
+                    p={1}
                     overflowY={"auto"} 
                     flexDir={"column"}
                     border={"1px solid lightgrey"}
                     borderRadius={10}
                     w={"100%"}
                 >
-                    <p>Ingredient</p>
-                    <p>Ingredient</p>
-                    <p>Ingredient</p>
-                    <p>Ingredient</p>
-                    <p>Ingredient</p>
-                    
-
+                    {user && user.ingredients ? (
+                        user.ingredients.map((ingredient: itemObject, index) => {
+                           return <ListItem key={"ingredient"+index} itemData={ingredient} />
+                        })
+                    )
+                    : <p>No ingredients available, add some new ones</p>
+                    }
                 </Flex>
                 <Button color="grey" textDecoration="none" border={"none"} bg={"none"} mb={5}>
                     <AddIcon /> add

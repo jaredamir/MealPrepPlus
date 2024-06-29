@@ -1,17 +1,7 @@
 import { AddIcon } from "@chakra-ui/icons"
 import { Flex } from "@chakra-ui/react"
+import itemObject from "@/app/models/itemObject"
 
-interface itemObject{
-    name: string,
-    serving_amount: number,
-    measurement: string,
-    cal: number,
-    pro: number,
-    carb: number,
-    fats: number,
-    sugar: number,
-    price: number
-};
 interface ItemDataProps{
     itemData: itemObject
 };

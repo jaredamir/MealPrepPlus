@@ -21,28 +21,9 @@ import { AddIcon } from "@chakra-ui/icons";
 import SectionItem from "../components/sectionItem";
 import ListItem from "../components/listItem";
 import { TEST_USER_DATA } from "../utils/constants";
-
-interface itemObject{
-    name: string,
-    serving_amount: number,
-    measurement: string,
-    cal: number,
-    pro: number,
-    carb: number,
-    fats: number,
-    sugar: number,
-    price: number
-};
-
-interface UserObject{
-    name: string;
-    ingredients: itemObject[];
-};
-
-interface SectionObject {
-    name: string;
-    items: itemObject[];
-}
+import itemObject from "../models/itemObject";
+import SectionObject from "../models/sectionObject";
+import UserObject from "../models/userObject";
 
 const categoryOptions = ["Breakfast", "Lunch", "Dinner", "Snack"]
 const defaultSection = {
@@ -88,6 +69,10 @@ export default function Create(){
             totalCalories += totalCaloriesInSection; 
         });
         return totalCalories;
+    }
+
+    function addSection() {
+        setSections(prevArray => [...prevArray, defaultSection])
     }
     return(
         <>
@@ -140,7 +125,7 @@ export default function Create(){
                     })}
                 </div>
                 <Flex justifyContent={"center"} mb={7}>
-                    <Button>
+                    <Button onClick={() => addSection()}>
                         <AddIcon/> 
                         Add Section
                     </Button>

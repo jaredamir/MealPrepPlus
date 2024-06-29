@@ -9,23 +9,10 @@ import {
     Text 
 } from "@chakra-ui/react";
 import EditableItem from "../editableItem";
+import SectionObject from "@/app/models/sectionObject";
+import itemObject from "@/app/models/itemObject";
 
-interface itemObject{
-    name: string,
-    serving_amount: number,
-    measurement: string,
-    cal: number,
-    pro: number,
-    carb: number,
-    fats: number,
-    sugar: number,
-    price: number
-};
 
-interface SectionObject {
-    name: string;
-    items: itemObject[];
-}
 interface SectionItemProps {
     sectionData: SectionObject;
 };
@@ -54,7 +41,11 @@ export default function SectionItem({sectionData}: SectionItemProps){
                         <>
                             {sectionData.items.map((item: itemObject, index) => {
                                 return (
-                                    <EditableItem key={sectionData.name + "Item" + index} itemData={item} />
+                                    <EditableItem 
+                                        key={sectionData.name + "Item" + index} 
+                                        itemData={item} 
+                                        positionInArray={index}
+                                    />
                                 );
                             })}
 

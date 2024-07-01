@@ -15,6 +15,14 @@ import {
     StatHelpText,
     StatLabel,
     StatNumber,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useDisclosure,
 } from "@chakra-ui/react"
 import Navbar from "../components/navbar";
 import { AddIcon } from "@chakra-ui/icons";
@@ -24,6 +32,7 @@ import { TEST_USER_DATA } from "../utils/constants";
 import itemObject from "../models/itemObject";
 import SectionObject from "../models/sectionObject";
 import UserObject from "../models/userObject";
+import EditableItem from "../components/editableItem";
 
 const categoryOptions = ["Breakfast", "Lunch", "Dinner", "Snack"]
 const defaultSection = {
@@ -53,31 +62,67 @@ const defaultSection = {
         }
     ],
 }
+const EmptySectionItem = {
+    name: '',
+    items: [],
+}
 
 export default function Create(){
-    const [sections, setSections] = useState<SectionObject[]>([defaultSection])
+    //const [sections, setSections] = useState<SectionObject[]>([EmptySectionItem])
+    const [ingredients, setIngredients] = useState<itemObject[]>([])
     const [user, setUser] = useState<UserObject>(TEST_USER_DATA)
+
+    function addIngredient(ingredient: itemObject){
+        setIngredients(prevArr => [...prevArr, ingredient])
+    }
+
+    function removeIngredient(ingredient: itemObject, positionInArray: number){
+        setIngredients(prevArr => prevArr.filter((ingredient, index) => index !== positionInArray))
+    }
     
+    function updateIngredientInputAmount(inputAmount: number | null, positionInArray: number){
+        const updatedIngredients = ingredients.map((ingredient: itemObject, index) => {
+            if (index === positionInArray){
+                return {...ingredient, inputAmount: inputAmount}
+            }
+            return ingredient
+        })
+        setIngredients(updatedIngredients)
+    }
 
     const calcTotalCalories = function(){
         let totalCalories = 0;
+        ingredients.forEach((ingredient: itemObject) => {
+            if(ingredient.inputAmount){
+                totalCalories += ingredient.cal * (ingredient.inputAmount / ingredient.serving_amount)
+            } else{
+                totalCalories += ingredient.cal
+            }
+        })
+        /*
         sections.forEach((section: SectionObject) =>{
             let totalCaloriesInSection = 0;
-            section.items.forEach((item: itemObject) => {
+            section?.items?.forEach((item: itemObject) => {
                 totalCaloriesInSection += item.cal;
             })
             totalCalories += totalCaloriesInSection; 
         });
+        */
         return totalCalories;
     }
 
+    /*
     function addSection() {
-        setSections(prevArray => [...prevArray, defaultSection])
-    }
+        setSections(prevArray => [...prevArray, EmptySectionItem])
+    }*/
     return(
         <>
             <Navbar />
             <main style={{padding: "50px", position: "relative", paddingBottom: "100px"}}>
+                <Flex mb={2} gap={3}>
+                    <a>Your Ingredients</a>
+                    <a>Community</a>
+                </Flex>
                 <Flex 
                     maxH={"200px"} 
                     p={1}
@@ -89,18 +134,24 @@ export default function Create(){
                 >
                     {user && user.ingredients ? (
                         user.ingredients.map((ingredient: itemObject, index) => {
-                           return <ListItem key={"ingredient"+index} itemData={ingredient} />
+                           return (<ListItem 
+                                        key={"ingredient"+index} 
+                                        itemData={ingredient} 
+                                        addIngredient={addIngredient}
+                                        
+                                    />
+                                )
                         })
                     )
                     : <p>No ingredients available, add some new ones</p>
                     }
                 </Flex>
                 <Button color="grey" textDecoration="none" border={"none"} bg={"none"} mb={5}>
-                    <AddIcon /> add
+                    <AddIcon mx={2}/> add new ingredient
                 </Button>
 
                 <Flex justifyContent={"space-between"}>
-                    <Editable defaultValue='Name' minW={100}>
+                    <Editable defaultValue='Meal name' minW={100}>
                         {/*bug: uneditable when empty*/}
                         <EditablePreview /> 
                         <EditableInput />
@@ -118,6 +169,22 @@ export default function Create(){
                 </Flex>
                 <Divider my={2} />
                 <div style={{paddingLeft: "50px", marginBottom: "20px"}}>
+                    {ingredients.length > 0 ?
+                    (ingredients.map((ingredient: itemObject, index) => {
+                        return (
+                            <EditableItem 
+                                removeIngredient={removeIngredient} 
+                                itemData={ingredient} 
+                                positionInArray={index} 
+                                updateIngredientInputAmount={updateIngredientInputAmount}
+                                key={"sectionItem"+index}
+                            />
+                        )
+                    }))
+                    : <p>Add ingredients to this meal</p>
+                }
+                </div>
+                {/*<div style={{paddingLeft: "50px", marginBottom: "20px"}}>
                     {sections.map((section: SectionObject, index) => {
                         return (
                             <SectionItem key={"sectionItem"+index} sectionData={section} />
@@ -129,7 +196,7 @@ export default function Create(){
                         <AddIcon/> 
                         Add Section
                     </Button>
-                </Flex>
+                </Flex>*/}
                 
                 <div style={{
                     position: "fixed", 

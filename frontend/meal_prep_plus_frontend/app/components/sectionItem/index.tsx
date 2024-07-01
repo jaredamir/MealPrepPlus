@@ -22,9 +22,9 @@ export default function SectionItem({sectionData}: SectionItemProps){
             {sectionData ? (
                 <>
                 <Flex justifyContent="space-between">
-                    <Editable defaultValue={sectionData.name || 'Name'} w={20}>
+                    <Editable defaultValue={sectionData.name === '' ? 'Section name' : sectionData.name} w={30}>
                         <EditablePreview />
-                        <EditableInput />
+                        <EditableInput w={30}/>
                     </Editable>
 
                     <Flex gap={5} alignItems={"centers"}>
@@ -39,7 +39,8 @@ export default function SectionItem({sectionData}: SectionItemProps){
                 }}>
                     {sectionData.items && (
                         <>
-                            {sectionData.items.map((item: itemObject, index) => {
+                            { sectionData.items.length > 0 ?
+                            (sectionData.items.map((item: itemObject, index) => {
                                 return (
                                     <EditableItem 
                                         key={sectionData.name + "Item" + index} 
@@ -47,7 +48,10 @@ export default function SectionItem({sectionData}: SectionItemProps){
                                         positionInArray={index}
                                     />
                                 );
-                            })}
+                                })
+                                )
+                                : <p>Add ingredients to this section</p>
+                            }
 
                         </>
                     )}

@@ -9,16 +9,18 @@ interface ItemDataProps{
     positionInArray: number;
     removeIngredient: (ingredient: itemObject, positionInArray: number) => void;
     updateIngredientInputAmount: (inputAmount: number | null, positionInArray: number) => void;
+    updateHiddenStateIngredient: (hiddenState: boolean, positionInArray: number) => void;
 };
 export default function EditableItem({itemData, 
     positionInArray, 
     removeIngredient, 
-    updateIngredientInputAmount
+    updateIngredientInputAmount,
+    updateHiddenStateIngredient,
 }: ItemDataProps){
     const [amount, setAmount] = useState<number>(itemData.serving_amount)
     const [totalCal, setTotalCal] = useState<number>(itemData.cal)
     const [isInputError, setIsInputError] = useState<boolean>(false)
-    const [isHidden, setIsHidden] =useState<boolean>(false)
+    const [isHidden, setIsHidden] = useState<boolean>(false)
 
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,12 +31,22 @@ export default function EditableItem({itemData,
             setAmount(Number(e.target.value))
             updateIngredientInputAmount(Number(e.target.value), positionInArray)
         }else{
-            setIsInputError(true)
+            if(e.target.value === ''){
+                setIsInputError(false)
+            } else{
+                setIsInputError(true)
+            }
             setTotalCal(itemData.cal)
             setAmount(itemData.serving_amount)
             updateIngredientInputAmount(null, positionInArray)
         }
     }
+
+    function updateIsHidden(){
+        setIsHidden(!isHidden)
+        updateHiddenStateIngredient(!isHidden, positionInArray)
+    }
+    //**Make unit text a dropdown to do a conversion**
     return(
         <>
             <Flex justifyContent={"space-between"} h={10} p={2} bg={isHidden ? "lightgrey" : "none"}>
@@ -66,7 +78,7 @@ export default function EditableItem({itemData,
                 <Flex columnGap={5} alignItems={"centers"}>
                         <a 
                             style={{cursor: "pointer"}}
-                            onClick={() => {setIsHidden(!isHidden)}}
+                            onClick={() => {updateIsHidden()}}
                         >
                             {isHidden ? "Show" : "Hide"}
                         </a>

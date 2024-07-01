@@ -3,6 +3,7 @@ export default interface itemObject{
     serving_amount: number,
     measurement: string,
     inputAmount?: number | null,
+    isHidden?: boolean | null,
     cal: number,
     pro: number,
     carb: number,

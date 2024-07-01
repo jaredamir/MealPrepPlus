@@ -24,7 +24,7 @@ export default function ListItem({itemData, addIngredient}: ItemDataProps){
                 {itemData.cal && <p>{itemData.cal} Calories</p>}
                 
                 <Flex columnGap={5} alignItems={"centers"}>
-                        <AddIcon onClick={() => {addIngredient(itemData)}}/>
+                        <AddIcon style={{cursor: "pointer"}} onClick={() => {addIngredient(itemData)}}/>
                     </Flex>
             </Flex>
         </>

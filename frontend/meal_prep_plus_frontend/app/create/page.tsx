@@ -79,6 +79,16 @@ export default function Create(){
     function removeIngredient(ingredient: itemObject, positionInArray: number){
         setIngredients(prevArr => prevArr.filter((ingredient, index) => index !== positionInArray))
     }
+
+    function updateHiddenStateIngredient(hiddenState: boolean, positionInArray: number){
+        const updatedIngredients = ingredients.map((ingredient: itemObject, index) => {
+            if (index === positionInArray){
+                return {...ingredient, isHidden: hiddenState}
+            }
+            return ingredient
+        })
+        setIngredients(updatedIngredients)
+    }
     
     function updateIngredientInputAmount(inputAmount: number | null, positionInArray: number){
         const updatedIngredients = ingredients.map((ingredient: itemObject, index) => {
@@ -93,11 +103,12 @@ export default function Create(){
     const calcTotalCalories = function(){
         let totalCalories = 0;
         ingredients.forEach((ingredient: itemObject) => {
-            if(ingredient.inputAmount){
+            if(!ingredient.isHidden || !ingredient.isHidden === null){
+                if(ingredient.inputAmount){
                 totalCalories += ingredient.cal * (ingredient.inputAmount / ingredient.serving_amount)
             } else{
                 totalCalories += ingredient.cal
-            }
+            }}
         })
         /*
         sections.forEach((section: SectionObject) =>{
@@ -178,6 +189,7 @@ export default function Create(){
                                 positionInArray={index} 
                                 updateIngredientInputAmount={updateIngredientInputAmount}
                                 key={"sectionItem"+index}
+                                updateHiddenStateIngredient={updateHiddenStateIngredient}
                             />
                         )
                     }))

@@ -15,13 +15,6 @@ import {
     StatHelpText,
     StatLabel,
     StatNumber,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
     useDisclosure,
 } from "@chakra-ui/react"
 import Navbar from "../components/navbar";
@@ -33,6 +26,7 @@ import itemObject from "../models/itemObject";
 import SectionObject from "../models/sectionObject";
 import UserObject from "../models/userObject";
 import EditableItem from "../components/editableItem";
+import NewItemModal from "../components/newItemModal";
 
 const categoryOptions = ["Breakfast", "Lunch", "Dinner", "Snack"]
 const defaultSection = {
@@ -100,6 +94,12 @@ export default function Create(){
         setIngredients(updatedIngredients)
     }
 
+    function storeNewItem(item: itemObject){
+        const updatedIngredientsList = [...user.ingredients, item]
+        const updatedUser = { ...user, ingredients: updatedIngredientsList}
+        setUser(updatedUser)
+    }
+
     const calcTotalCalories = function(){
         let totalCalories = 0;
         ingredients.forEach((ingredient: itemObject) => {
@@ -126,10 +126,21 @@ export default function Create(){
     function addSection() {
         setSections(prevArray => [...prevArray, EmptySectionItem])
     }*/
+
+        const { 
+            isOpen: isNewItemModalOpen, 
+            onOpen: onNewItemModalOpen, 
+            onClose: onNewItemModalClose } = useDisclosure()
     return(
         <>
             <Navbar />
             <main style={{padding: "50px", position: "relative", paddingBottom: "100px"}}>
+                <NewItemModal 
+                    isNewItemModalOpen={isNewItemModalOpen}
+                    onNewItemModalOpen={onNewItemModalOpen} 
+                    onNewItemModalClose={onNewItemModalClose}
+                    storeNewItem={storeNewItem}
+                />
                 <Flex mb={2} gap={3}>
                     <a>Your Ingredients</a>
                     <a>Community</a>
@@ -157,12 +168,19 @@ export default function Create(){
                     : <p>No ingredients available, add some new ones</p>
                     }
                 </Flex>
-                <Button color="grey" textDecoration="none" border={"none"} bg={"none"} mb={5}>
-                    <AddIcon mx={2}/> add new ingredient
+                <Button 
+                    color="grey" 
+                    textDecoration="none" 
+                    border={"none"} 
+                    bg={"none"} 
+                    mb={5}
+                    onClick={onNewItemModalOpen}
+                >
+                    <AddIcon mx={2}/> Create new ingredient
                 </Button>
 
                 <Flex justifyContent={"space-between"}>
-                    <Editable defaultValue='Meal name' minW={100}>
+                    <Editable defaultValue='Meal name*' minW={100}>
                         {/*bug: uneditable when empty*/}
                         <EditablePreview /> 
                         <EditableInput />
@@ -193,7 +211,7 @@ export default function Create(){
                             />
                         )
                     }))
-                    : <p>Add ingredients to this meal</p>
+                    : <p style={{color: "grey", margin: "20px 0px"}}>Add ingredients to this meal</p>
                 }
                 </div>
                 {/*<div style={{paddingLeft: "50px", marginBottom: "20px"}}>

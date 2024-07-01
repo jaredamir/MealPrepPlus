@@ -2,16 +2,16 @@
 export const MEASUREMENTS =[
     "item(s)",
     "oz",
-    "grams",
-    "lbs",
-    "tbsp",
-    "tsp",
-    "liters",
+    "gram(s)",
+    "lb(s)",
+    "tbsp(s)",
+    "tsp(s)",
+    "liter(s)",
     "fl. oz",
-    "pints",
-    "cups",
-    "mg",
-    "quart",
+    "pint(s)",
+    "cup(s)",
+    "mg(s)",
+    "quart(s)",
 ]
 
 export const EXAMPLE_INGREDIENTS = [

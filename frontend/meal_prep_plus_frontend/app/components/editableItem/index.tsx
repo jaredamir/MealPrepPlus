@@ -7,6 +7,7 @@ import itemObject from "@/app/models/itemObject"
 interface ItemDataProps{
     itemData: itemObject;
     positionInArray: number;
+    inputAmount?: number;
     removeIngredient: (ingredient: itemObject, positionInArray: number) => void;
     updateIngredientInputAmount: (inputAmount: number | null, positionInArray: number) => void;
     updateHiddenStateIngredient: (hiddenState: boolean, positionInArray: number) => void;
@@ -16,6 +17,7 @@ export default function EditableItem({itemData,
     removeIngredient, 
     updateIngredientInputAmount,
     updateHiddenStateIngredient,
+    inputAmount,
 }: ItemDataProps){
     const [amount, setAmount] = useState<number>(itemData.serving_amount)
     const [totalCal, setTotalCal] = useState<number>(itemData.cal)
@@ -55,6 +57,7 @@ export default function EditableItem({itemData,
                         <HamburgerIcon />
                         <input 
                             type="number"
+                            value={inputAmount ? inputAmount : undefined}
                             style={{
                                 width: "50px",
                                 height: "30px",

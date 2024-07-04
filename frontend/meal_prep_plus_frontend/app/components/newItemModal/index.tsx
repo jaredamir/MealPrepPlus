@@ -52,6 +52,7 @@ export default function NewItemModal({
 
     const submitAddItem = () =>{
             const newItemObject = {
+                //IF === '' MAKE EQUAL TO NULL
                 name: name,
                 serving_amount: servingSize,
                 measurement: measurement,
@@ -87,7 +88,7 @@ export default function NewItemModal({
                                 { MEASUREMENTS.map((measurement: string, index) => {
                                     return (<option 
                                             key={"measurementOption" + index} 
-                                            value={'option'+(index+1)}
+                                            value={measurement}
                                             >
                                                 {measurement}
                                             </option>)

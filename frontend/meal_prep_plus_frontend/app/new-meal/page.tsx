@@ -28,7 +28,7 @@ import UserObject from "../models/userObject";
 import EditableItem from "../components/editableItem";
 import NewItemModal from "../components/newItemModal";
 
-const categoryOptions = ["Breakfast", "Lunch", "Dinner", "Snack"]
+const categoryOptions = ["Breakfast", "Lunch", "Dinner", "Snack", "Drink"]
 const defaultSection = {
     name: "name",
     items: [
@@ -61,7 +61,7 @@ const EmptySectionItem = {
     items: [],
 }
 
-export default function Create(){
+export default function NewMeal(){
     //const [sections, setSections] = useState<SectionObject[]>([EmptySectionItem])
     const [ingredients, setIngredients] = useState<itemObject[]>([])
     const [user, setUser] = useState<UserObject>(TEST_USER_DATA)
@@ -159,7 +159,7 @@ export default function Create(){
                            return (<ListItem 
                                         key={"ingredient"+index} 
                                         itemData={ingredient} 
-                                        addIngredient={addIngredient}
+                                        addItem={addIngredient}
                                         
                                     />
                                 )
@@ -214,6 +214,10 @@ export default function Create(){
                     : <p style={{color: "grey", margin: "20px 0px"}}>Add ingredients to this meal</p>
                 }
                 </div>
+                <Flex justifyContent={"right"} gap={3}>
+                    <Button>Cancel</Button>
+                    <Button colorScheme="blue">Save</Button>
+                </Flex>
                 {/*<div style={{paddingLeft: "50px", marginBottom: "20px"}}>
                     {sections.map((section: SectionObject, index) => {
                         return (
